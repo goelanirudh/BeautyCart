@@ -20,12 +20,15 @@ else {
 // Add to item clicked then increment the count of cart
 // $('.cart').click(function () {
     $('.divpr').on('click','button.cart', function(){
-    var idstr = this.id.toString(); //id item pr[item_id]
+    var idstr = this.id.toString(); //id item pr[item_id] with pr id is showing
     if (cart[idstr] != undefined) {
-        cart[idstr] = cart[idstr] + 1
+        qty=cart[idstr][0]+1;
     }
     else {
-        cart[idstr] = 1
+        qty =  1;
+        name = document.getElementById('name'+idstr).innerHTML
+        price=document.getElementById('price'+idstr).innerHTML
+        cart[idstr] = [qty,name,parseInt(price)]
     }
     updateCart(cart)
 
@@ -36,9 +39,16 @@ else {
 
 function updateCart(cart) {
     var sum=0;
+
     for (var item in cart) {
-        sum=sum+cart[item]
-        document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "' class='btn btn-primary minus'>-</button> <span id='val" + item + "''>" + cart[item] + "</span> <button id='plus" + item + "' class='btn btn-primary plus'> + </button>";
+        sum=sum+cart[item][0]
+        console.log('sum',sum)
+        console.log('item',item)
+        console.log('cart+item',cart[item])
+        console.log('sdad',cart[item][0])
+        console.log(cart)
+
+        document.getElementById('div'+item).innerHTML = "<button id='minus" + item + "' class='btn btn-success minus'>-</button> <span id='val" + item + "''>" + cart[item][0] + "</span> <button id='plus" + item + "' class='btn btn-success plus'> + </button>";
     }
     localStorage.setItem('cart', JSON.stringify(cart)) //it parses the key to string
     // document.getElementById('cart').innerHTML = Object.keys(cart).length;// to show in real time change on cart
@@ -58,10 +68,10 @@ function updatePopover() {
     var i = 1;
     for (var item in cart) {
         popStr = popStr + "<b>" + i + "</b>. "
-        popStr = popStr + document.getElementById('name' + item).innerHTML + "   Qty " + cart[item] + "</br>"
+        popStr = popStr + document.getElementById('name' + item).innerHTML + "   Qty " + cart[item][0] + "</br>"
         console.log(item)
 
-        console.log(cart[item])
+        console.log(cart[item][0])
         i++
     }
     //TODO: Check BUtton tag not working
@@ -75,7 +85,7 @@ function updatePopover() {
 function clearCart() {
     cart = JSON.parse(localStorage.getItem('cart'));
     for (var item in cart) {
-        document.getElementById('div'+item).innerHTML='<button id=">'+item+'"class="btn btn-primary cart">Add To Cart</button>'
+        document.getElementById('div'+item).innerHTML='<button id="'+item+'"class="btn btn-primary cart">Add To Cart</button>'
     }
     localStorage.clear()
     cart = {}
@@ -87,23 +97,15 @@ function clearCart() {
 // button.minu or plus is the id of button
 $('.divpr').on('click', "button.minus", function () {
     product_id = this.id.slice(7)
-    cart['pr' + product_id] = cart['pr' + product_id] - 1;// this create the new updated cart by using minus btn
-    cart['pr' + product_id] = Math.max(0, cart['pr' + product_id])
-    document.getElementById('valpr' + product_id).innerHTML = cart['pr' + product_id];
+    cart['pr' + product_id][0] = cart['pr' + product_id][0] - 1;// this create the new updated cart by using minus btn
+    cart['pr' + product_id][0] = Math.max(0, cart['pr' + product_id][0])
+    document.getElementById('valpr' + product_id).innerHTML = cart['pr' + product_id][0];
     updateCart(cart)
-
-
-    //TO UNDERSTANDIN
-    // cart={    to this value and do the operations accordingly
-    //     pr7:7,
-    //     pr8:9
-    // }
-
 });
 
 $('.divpr').on("click", "button.plus", function () {
     product_id = this.id.slice(6)
-    cart['pr' + product_id] = cart['pr' + product_id] + 1;// this create the new updated cart by using plus btn
-    document.getElementById('valpr' + product_id).innerHTML = cart['pr' + product_id];
+    cart['pr' + product_id][0] = cart['pr' + product_id][0] + 1;// this create the new updated cart by using plus btn
+    document.getElementById('valpr' + product_id).innerHTML = cart['pr' + product_id][0];
     updateCart(cart)
-})
+});

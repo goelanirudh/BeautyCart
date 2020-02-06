@@ -29,9 +29,14 @@
                                     <h5 class="card-title" id="namepr{{product.id}}">{{product.product_name}}</h5>
                                 </a>
                                 <p class="card-text">{{product.product_description|slice:"0:40"}}...</p>
+                                <a href="/shop/product/{{product.id}}">
+                                    <h6 class="card-title">Rs.<span id="pricepr{{product.id}}">{{product.price}}</span>
+                                    </h6>
+                                </a>
                                 <span id="divpr{{product.id}}" class="divpr">
-                                    <button id="pr{{product.id}}" class="btn btn-primary my-3 cart">Add To Cart</button>
+                                    <button id="pr{{product.id}}" class="btn btn-success my-3 cart">Add To Cart</button>
                                 </span>
+
                             </div>
                         </div>
                     </div>
