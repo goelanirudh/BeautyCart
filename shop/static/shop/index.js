@@ -42,13 +42,8 @@ function updateCart(cart) {
 
     for (var item in cart) {
         sum=sum+cart[item][0]
-        console.log('sum',sum)
-        console.log('item',item)
-        console.log('cart+item',cart[item])
-        console.log('sdad',cart[item][0])
-        console.log(cart)
 
-        document.getElementById('div'+item).innerHTML = "<button id='minus" + item + "' class='btn btn-success minus'>-</button> <span id='val" + item + "''>" + cart[item][0] + "</span> <button id='plus" + item + "' class='btn btn-success plus'> + </button>";
+        document.getElementById('div'+item).innerHTML = "<button id='minus" + item + "' class='btn btn-primary minus'>-</button> <span id='val" + item + "''>" + cart[item][0] + "</span> <button id='plus" + item + "' class='btn btn-primary plus'> + </button>";
     }
     localStorage.setItem('cart', JSON.stringify(cart)) //it parses the key to string
     // document.getElementById('cart').innerHTML = Object.keys(cart).length;// to show in real time change on cart

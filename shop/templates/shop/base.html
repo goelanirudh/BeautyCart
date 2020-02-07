@@ -12,7 +12,7 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{% static 'shop/index.css' %}">
-
+    <link rel="icon" href="/static/logo/logo.jpg" type="image/x-icon">
     <title>{% block title %}{% endblock %}</title>
 </head>
 
@@ -20,8 +20,12 @@
 
     <!-- navigation bar started -->
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/shop/">BeautyKart</a>
+    <nav class="navbar navbar-expand-lg navbar-dark " style="background-color: #11111a;">
+
+        <a class="navbar-brand" href="/shop">
+            <img src="/static/logo/logo.jpg" width="40px" height="40px" alt="home">
+            BlushyBlush
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -43,27 +47,48 @@
                 </li>
 
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form class="form-inline my-2 my-lg-0" method="GET" action="/shop/search/">
+                <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
-            <button type="button" class="btn btn-secondary mx-2" id="popovercart" data-html="true" data-container="body"
+
+            {% if user.is_authenticated %}
+            <button type="button" class="btn btn-outline-danger mx-2" id="popovercart" data-html="true" data-container="body"
                 data-toggle="popover" data-placement="bottom" data-content="Vivamus
             sagittis lacus vel augue laoreet rutrum faucibus.">
                 cart(<span id="cart">0</span>)
             </button>
-            <button class='btn btn-outline-success mx-1' onclick='clearCart()' id='clearCart'>
+            <button class='btn btn-outline-danger mx-1' onclick='clearCart()' id='clearCart'>
                 Clear Cart
             </button>
+
             <a href='/shop/checkout'>
-                <button class='btn btn-outline-success' id='checkout'>
+                <button class='btn btn-outline-danger' id='checkout'>
                     Checkout
                 </button>
              </a>
+            <a href="/logout" class="mx-2">
+                <button class="btn btn-outline-danger">Logout</button>
+            </a>
+            {% else %}
+            <button type="button" class="btn btn-outline-danger mx-2" onclick="window.location.href='/register'">
+                Register
+            </button>
 
+            <button type="button" class="btn btn-outline-danger" onclick="window.location.href='/login'">
+                Log In
+            </button>
+            {% endif %}
         </div>
     </nav>
     <!-- navigation bar ended -->
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}}">
+        {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
 
     {% block body %}{% endblock %}
 
@@ -79,7 +104,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <script src="{% static 'shop/main.js' %}"></script>
+    <script src="{% static 'shop/index.js' %}"></script>
     <script src="{% static 'shop/checkout.js' %}"></script>
     <script src="{% static 'shop/tracker.js' %}"></script>
 </body>

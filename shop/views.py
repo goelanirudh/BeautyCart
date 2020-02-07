@@ -32,11 +32,44 @@ def index(request):
         nSlides=slidesCount//4+ceil((slidesCount/4)-(slidesCount//4))
         allProducts.append([prod,range(1,nSlides),nSlides])
 
-    params={
-    'allProducts':allProducts
-    }
+    params={'allProducts':allProducts}
 
     return render(request,'shop/index.html',params)
+
+
+def searchMatch(query,item):
+    # return true only if the query matches the item in any sort
+    if(query in item.product_name.lower() or query in item.product_name.upper()
+     or query in item.product_description.lower() or query in item.product_name.upper()
+      or query in item.subcategory or query in item.category):
+        return True
+    else:
+        return False
+
+
+def search(request):
+    query=request.GET.get('search')
+    allProducts=[]
+    categorProduct=Product.objects.values('category')
+    categories={item['category'] for item in categorProduct}
+    for catgry in categories:
+        prodtemp=Product.objects.filter(category=catgry)
+        prod=[item for item in prodtemp if searchMatch(query,item)]
+
+
+        slidesCount=len(prod)
+        nSlides=slidesCount//4+ceil((slidesCount/4)-(slidesCount//4))
+        if len(prod)!=0:
+            allProducts.append([prod,range(1,nSlides),nSlides])
+
+    params={'allProducts':allProducts,'msg':""}
+    if(len(allProducts)==0):
+        params={'msg':'Please enter valid product'}
+
+    return render(request,'shop/search.html',params)
+
+
+
 
 def about(request):
     return render(request,'shop/about.html')
@@ -75,8 +108,7 @@ def tracker(request):
 
     return render(request,'shop/tracker.html')
 
-def search(request):
-    return render(request,'shop/search.html')
+
 
 
 
